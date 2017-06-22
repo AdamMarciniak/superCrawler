@@ -1,3 +1,5 @@
+#Finds all the URL links for every food item on the Superstore website.
+
 from bs4 import BeautifulSoup
 import requests
 import re

@@ -2,9 +2,12 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
+
+
+
+
 nutriRegex = re.compile(r'((\w*\s\w*)|(\w*))\s(\d*\.\d*)\s(g|mg)')
 
-from pprint import pprint
 
 res = requests.get(r'https://www.realcanadiansuperstore.ca/Food/Fruits-%26-Vegetables/Fruit/Apples-%26-Pears/Anjou-Pears/p/20174514001_KG?isPDPFlow=Y')
 

@@ -18,6 +18,30 @@ print("BC button clicked")
 time.sleep(5)
 print('5 secs up')
 
+def findSection(link):
+
+    browser.get(link)
+
+    print('sleeping 5 sec')
+    time.sleep(5)
+    print('awake')
+
+    sectionElems = browser.find_elements_by_css_selector("li[data-level='1'] > a.sub-nav-link")
+
+
+    sectionURLList = []
+
+    print('printing  links')
+    for link in sectionElems:
+        attrib = link.get_attribute('href')
+        print(attrib)
+        sectionURLList.append(attrib)
+
+
+
+    return(sectionURLList)
+
+
 
 def findsubcategory(link):
 
@@ -51,12 +75,16 @@ def findItems(link):
     time.sleep(5)
     print('item wake up')
 
-    loadMore = browser.find_element_by_css_selector(".btn-show-more")
+    try:
 
-    if loadMore:
+        loadMore = browser.find_element_by_css_selector(".btn-show-more")
         print(loadMore)
         loadMore.click()
         time.sleep(2)
+
+    except:
+        pass
+
 
 
 
@@ -75,34 +103,40 @@ def findItems(link):
 
 fullList = set()
 
-print('finding main subcats')
 
-subCatURLSetMain = findsubcategory(homeLink)
+sectionLinks = findSection(homeLink)
 
-print('found main subcats')
-fullnonSet = []
-for link in subCatURLSetMain:
+for i in range(0,9):
 
-    print('visitng mainsub link')
-    print(link)
 
-    print('going into subsubcat page')
-    subCatURLSetSub = findsubcategory(link)
-    print('found subsublinks')
+    print('finding main subcats')
 
-    if len(subCatURLSetSub) < 1:
-        fullList.update(findItems(link))
+    subCatURLSetMain = findsubcategory(sectionLinks[i])
 
-    for subLink in subCatURLSetSub:
+    print('found main subcats')
+    fullnonSet = []
+    for link in subCatURLSetMain:
 
-        print('goin into subsublink')
-        print(subLink)
+        print('visitng mainsub link')
+        print(link)
 
-        itemLinks = findItems(subLink)
+        print('going into subsubcat page')
+        subCatURLSetSub = findsubcategory(link)
+        print('found subsublinks')
 
-        fullnonSet.append(itemLinks)
+        if len(subCatURLSetSub) < 1:
+            fullList.update(findItems(link))
 
-        fullList.update(itemLinks)
+        for subLink in subCatURLSetSub:
+
+            print('goin into subsublink')
+            print(subLink)
+
+            itemLinks = findItems(subLink)
+
+            fullnonSet.append(itemLinks)
+
+            fullList.update(itemLinks)
 
 
 fullSetList = set(fullList)
@@ -121,14 +155,3 @@ for line in fullSetList:
     fileObj.write('\n')
 
 fileObj.close()
-
-
-
-
-
-
-
-
-
-
-
